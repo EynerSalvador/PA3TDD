@@ -3,39 +3,63 @@
 <head>
   <title>Jasmine Test Runner</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.css">
+  <style>
+    /* Estilos para mejor visualización */
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    .loading { color: #666; padding: 20px; text-align: center; }
+  </style>
 </head>
 <body>
+  <div class="loading">Cargando pruebas, por favor espera...</div>
+
   <!-- Cargar Jasmine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/boot.js"></script>
 
-  <!-- Configuración inicial para las pruebas -->
+  <!-- Cargador de scripts -->
   <script>
-    // Configura timeout global para pruebas async
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; // 10 segundos
+    // Función para cargar scripts en orden
+    function loadScripts(scripts, callback) {
+      if (scripts.length === 0) {
+        callback();
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.src = scripts[0];
+      script.onload = () => loadScripts(scripts.slice(1), callback);
+      script.onerror = (e) => console.error(`Error loading ${scripts[0]}:`, e);
+      document.head.appendChild(script);
+    }
+
+    // Configuración inicial
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     
-    // Mock de fetch usando Jasmine (no Jest)
+    // Mock de fetch nativo de Jasmine
     window.originalFetch = window.fetch;
-    window.fetch = jasmine.createSpy('fetch').and.callFake(function() {
-      return Promise.resolve({
+    window.fetch = jasmine.createSpy('fetch').and.callFake(() => 
+      Promise.resolve({
         ok: true,
-        json: function() {
-          return Promise.resolve({
-            projects: [],
-            skills: []
-          });
-        }
+        json: () => Promise.resolve({ projects: [], skills: [] })
+      })
+    );
+
+    // Cargar modelos y luego pruebas
+    document.addEventListener('DOMContentLoaded', () => {
+      loadScripts([
+        '/PA3TDD/_data/models/Project.js',
+        '/PA3TDD/_data/models/Skill.js',
+        '/PA3TDD/assets/js/tests/Project.test.js',
+        '/PA3TDD/assets/js/tests/Skill.test.js'
+      ], () => {
+        // Eliminar mensaje de carga
+        const loading = document.querySelector('.loading');
+        if (loading) loading.remove();
+        
+        console.log('Todos los scripts cargados correctamente');
       });
     });
   </script>
-
-  <!-- Cargar modelos -->
-  <script src="/PA3TDD/_data/models/Project.js"></script>
-  <script src="/PA3TDD/_data/models/Skill.js"></script>
-
-  <!-- Cargar pruebas -->
-  <script src="/PA3TDD/assets/js/tests/Project.test.js"></script>
-  <script src="/PA3TDD/assets/js/tests/Skill.test.js"></script>
 </body>
 </html>

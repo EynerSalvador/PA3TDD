@@ -1,6 +1,3 @@
-// Skill.test.js
-import Skill from '../../models/Skill'; // Adjust path as needed
-
 describe('Skill Model', () => {
   let mockSkills;
   let originalFetch;

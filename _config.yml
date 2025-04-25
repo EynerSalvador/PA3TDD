@@ -1,23 +1,82 @@
-title: Mi Portafolio
+# Configuración básica del sitio
+title: Mi Portafolio Profesional
 email: tu@email.com
-description: >- 
-  Portafolio profesional con Jekyll, TDD y ORM en JSON
-baseurl: ""
-url: ""
-assets:
-  sources:
-    - assets
-twitter_username: tuusuario
-github_username: tuusuario
+description: >-
+  Portafolio profesional desarrollado con Jekyll, implementando TDD y ORM con JSON
+baseurl: "" # Dejar vacío para desarrollo local
+url: "" # Dejar vacío para desarrollo local o usar tu dominio en producción
 
-# Jekyll configuration
+# Configuración de Jekyll
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-assets # Opcional para mejor manejo de assets
 
-# Custom variables
-models_path: "_data/models"
-db_path: "_data/db.json"
+# Configuración de assets (crítica para resolver el error)
+assets:
+  base_path: /assets
+  sources:
+    - assets
+  js: js
+  css: css
+  cache: false # Desactivar en desarrollo
 
-# Build settings
+# Configuración de modelos y datos
+data_dir: _data
+models_path: _data/models
+db_path: _data/db.json
+
+# Configuración de compilación
 markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Configuración de GitHub Pages (para despliegue futuro)
+github:
+  repository: username/repo-name # Reemplazar con tus datos
+  branch: main
+
+# Configuración de SEO (opcional)
+seo:
+  title: true
+  description: true
+  image: "/assets/images/og-image.jpg"
+
+# Configuración personalizada para el ORM
+custom:
+  orm:
+    debug: true # Cambiar a false en producción
+    base_url: "" # Dejar vacío para rutas relativas
+
+# Excluir archivos/directorios no necesarios
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .gitignore
+  - .vscode
+  - .github
+
+# Incluir archivos/directorios adicionales
+include:
+  - _data/models
+  - assets/js
+  - assets/css
+
+# Configuración de desarrollo
+development: &development
+  url: http://localhost:4000
+  assets:
+    debug: true
+
+# Configuración de producción
+production: &production
+  url: https://tudominio.com
+  assets:
+    debug: false
+
+# Entornos (puedes activarlos con JEKYLL_ENV=production)
+environments:
+  development: *development
+  production: *production

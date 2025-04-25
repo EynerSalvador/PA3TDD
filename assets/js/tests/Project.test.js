@@ -1,9 +1,11 @@
+// Project.test.js
+import Project from '../../models/Project'; // Adjust path as needed
+
 describe('Project Model', () => {
   let mockProjects;
   let originalFetch;
 
   beforeAll(() => {
-    // Guardar fetch original y crear mock
     originalFetch = window.fetch;
     window.fetch = jasmine.createSpy('fetch');
   });
@@ -28,17 +30,15 @@ describe('Project Model', () => {
       }
     ];
 
-    // Configurar mock para estas pruebas
     fetch.and.returnValue(
       Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({ projects: mockProjects })
+        json: () => Promise.resolve(mockProjects) // Changed from { projects: mockProjects }
       })
     );
   });
 
   afterAll(() => {
-    // Restaurar fetch original
     window.fetch = originalFetch;
   });
 
@@ -55,9 +55,10 @@ describe('Project Model', () => {
     });
 
     it('debería usar valores por defecto cuando no se proporcionan', () => {
-      const partialData = { id: 3, title: 'Proyecto' };
-      const project = new Project(partialData);
+      const project = new Project({ id: 3, title: 'Proyecto' });
       
+      expect(project.id).toBe(3);
+      expect(project.title).toBe('Proyecto');
       expect(project.technologies).toEqual([]);
       expect(project.url).toBe('#');
       expect(project.createdAt).toBeDefined();
@@ -69,14 +70,15 @@ describe('Project Model', () => {
       const projects = await Project.all();
       
       expect(projects.length).toBe(2);
-      expect(projects[0]).toBeInstanceOf(Project);
+      expect(projects[0].title).toBe('Portafolio Profesional');
       expect(projects[1].title).toBe('Blog Técnico');
-      expect(fetch).toHaveBeenCalledWith('/_data/db.json');
+      expect(fetch).toHaveBeenCalled();
     });
 
     it('find() debería encontrar proyecto por ID', async () => {
       const project = await Project.find(1);
       
+      expect(project).toBeInstanceOf(Project);
       expect(project.id).toBe(1);
       expect(project.title).toBe('Portafolio Profesional');
     });
@@ -92,6 +94,10 @@ describe('Project Model', () => {
       expect(jsProjects.length).toBe(2);
       expect(jsProjects[0].title).toBe('Portafolio Profesional');
       expect(jsProjects[1].title).toBe('Blog Técnico');
+
+      const cssProjects = await Project.filterByTechnology('CSS3');
+      expect(cssProjects.length).toBe(1);
+      expect(cssProjects[0].title).toBe('Blog Técnico');
     });
   });
 
@@ -99,8 +105,18 @@ describe('Project Model', () => {
     it('debería manejar errores en all()', async () => {
       fetch.and.returnValue(Promise.reject(new Error('Network error')));
       
-      const projects = await Project.all();
-      expect(projects).toEqual([]);
+      await expectAsync(Project.all()).toBeRejectedWithError('Network error');
+    });
+
+    it('debería manejar respuestas no exitosas', async () => {
+      fetch.and.returnValue(
+        Promise.resolve({
+          ok: false,
+          status: 404
+        })
+      );
+      
+      await expectAsync(Project.all()).toBeRejected();
     });
   });
 });

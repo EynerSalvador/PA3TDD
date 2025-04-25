@@ -8,7 +8,7 @@ class Project {
   }
 
   static all() {
-    return fetch('/portfolio-jekyll/_data/db.json')
+    return fetch('/_data/db.json')
       .then(response => response.json())
       .then(data => data.projects.map(project => new Project(project)));
   }

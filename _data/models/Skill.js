@@ -7,7 +7,7 @@ class Skill {
   }
 
   static all() {
-    return fetch('/portfolio-jekyll/_data/db.json')
+    return fetch('/_data/db.json')
       .then(response => response.json())
       .then(data => data.skills.map(skill => new Skill(skill)));
   }

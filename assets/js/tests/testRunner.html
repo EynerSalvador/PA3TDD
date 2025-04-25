@@ -4,62 +4,98 @@
   <title>Jasmine Test Runner</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.css">
   <style>
-    /* Estilos para mejor visualización */
-    body { padding: 20px; font-family: Arial, sans-serif; }
-    .loading { color: #666; padding: 20px; text-align: center; }
+    body { padding: 20px; font-family: Arial; }
+    .loading { color: #666; text-align: center; padding: 50px; }
+    .status { margin: 20px 0; padding: 10px; border-radius: 4px; }
+    .success { background: #e8f5e9; color: #2e7d32; }
+    .error { background: #ffebee; color: #c62828; }
   </style>
 </head>
 <body>
-  <div class="loading">Cargando pruebas, por favor espera...</div>
+  <div class="loading" id="loading">Cargando pruebas...</div>
+  <div class="status" id="status"></div>
 
   <!-- Cargar Jasmine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/boot.js"></script>
 
-  <!-- Cargador de scripts -->
+  <!-- Configuración principal -->
   <script>
-    // Función para cargar scripts en orden
-    function loadScripts(scripts, callback) {
-      if (scripts.length === 0) {
-        callback();
-        return;
-      }
-      
-      const script = document.createElement('script');
-      script.src = scripts[0];
-      script.onload = () => loadScripts(scripts.slice(1), callback);
-      script.onerror = (e) => console.error(`Error loading ${scripts[0]}:`, e);
-      document.head.appendChild(script);
-    }
-
-    // Configuración inicial
+    // 1. Configurar tiempo de espera
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     
-    // Mock de fetch nativo de Jasmine
-    window.originalFetch = window.fetch;
-    window.fetch = jasmine.createSpy('fetch').and.callFake(() => 
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ projects: [], skills: [] })
-      })
-    );
+    // 2. Mostrar estado de carga
+    const statusEl = document.getElementById('status');
+    const loadingEl = document.getElementById('loading');
+    
+    function updateStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = `status ${type}`;
+    }
 
-    // Cargar modelos y luego pruebas
-    document.addEventListener('DOMContentLoaded', () => {
-      loadScripts([
-        '/PA3TDD/_data/models/Project.js',
-        '/PA3TDD/_data/models/Skill.js',
-        '/PA3TDD/assets/js/tests/Project.test.js',
-        '/PA3TDD/assets/js/tests/Skill.test.js'
-      ], () => {
-        // Eliminar mensaje de carga
-        const loading = document.querySelector('.loading');
-        if (loading) loading.remove();
-        
-        console.log('Todos los scripts cargados correctamente');
+    // 3. Mock de fetch
+    window.originalFetch = window.fetch;
+    window.fetch = jasmine.createSpy('fetch').and.callFake((url) => {
+      console.log('Fetch llamado para:', url);
+      return Promise.resolve({
+        ok: true,
+        json: () => {
+          if (url.includes('db.json')) {
+            return Promise.resolve({
+              projects: [
+                { id: 1, title: 'Test Project', technologies: ['JS'] }
+              ],
+              skills: [
+                { id: 1, name: 'JavaScript', category: 'Lenguajes' }
+              ]
+            });
+          }
+          return Promise.resolve({});
+        }
       });
     });
+
+    // 4. Función para cargar scripts
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    // 5. Cargar todo en orden
+    async function initializeTests() {
+      try {
+        updateStatus('Cargando modelos...', '');
+        
+        // Cargar modelos
+        await loadScript('/PA3TDD/_data/models/Project.js');
+        await loadScript('/PA3TDD/_data/models/Skill.js');
+        
+        updateStatus('Cargando pruebas...', '');
+        
+        // Cargar pruebas
+        await loadScript('/PA3TDD/assets/js/tests/Project.test.js');
+        await loadScript('/PA3TDD/assets/js/tests/Skill.test.js');
+        
+        updateStatus('Pruebas cargadas correctamente', 'success');
+        loadingEl.style.display = 'none';
+        
+        // Iniciar Jasmine
+        window.onload();
+      } catch (error) {
+        console.error('Error al cargar scripts:', error);
+        updateStatus(`Error: ${error.message}`, 'error');
+        loadingEl.textContent = 'Error al cargar las pruebas';
+      }
+    }
+
+    // Iniciar el proceso
+    document.addEventListener('DOMContentLoaded', initializeTests);
   </script>
 </body>
 </html>

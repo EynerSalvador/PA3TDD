@@ -1,5 +1,3 @@
-// Project.test.js
-import Project from '../../models/Project'; // Adjust path as needed
 
 describe('Project Model', () => {
   let mockProjects;

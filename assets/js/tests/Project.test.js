@@ -1,29 +1,33 @@
 describe('Project Model', () => {
+  let mockProjects;
+
   beforeEach(() => {
-    // Mock de fetch
+    mockProjects = [
+      { id: 1, title: 'Portafolio', description: 'Mi portafolio profesional' },
+      { id: 2, title: 'Blog', description: 'Blog personal' }
+    ];
+    
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve({
-          projects: [
-            { id: 1, title: 'Test Project', description: 'Test Desc' }
-          ]
-        })
+        json: () => Promise.resolve({ projects: mockProjects })
       })
     );
   });
 
-  test('should create a project instance', () => {
-    const project = new Project({ id: 1, title: 'Test' });
-    expect(project.title).toBe('Test');
+  // Usa it() en lugar de test()
+  it('debería crear una instancia con propiedades correctas', () => {
+    const project = new Project(mockProjects[0]);
+    expect(project.title).toBe('Portafolio');
+    expect(project.description).toBe('Mi portafolio profesional');
   });
 
-  test('all() should return array of projects', async () => {
+  it('all() debería retornar todos los proyectos', async () => {
     const projects = await Project.all();
-    expect(projects.length).toBeGreaterThan(0);
-    expect(projects[0] instanceof Project).toBe(true);
+    expect(projects.length).toBe(2);
+    expect(projects[0]).toBeInstanceOf(Project);
   });
 
-  test('find() should return a project by id', async () => {
+  it('find() debería encontrar proyecto por ID', async () => {
     const project = await Project.find(1);
     expect(project.id).toBe(1);
   });

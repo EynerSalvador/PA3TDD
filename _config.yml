@@ -1,0 +1,20 @@
+title: Mi Portafolio
+email: tu@email.com
+description: >- 
+  Portafolio profesional con Jekyll, TDD y ORM en JSON
+baseurl: ""
+url: ""
+twitter_username: tuusuario
+github_username: tuusuario
+
+# Jekyll configuration
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Custom variables
+models_path: "_data/models"
+db_path: "_data/db.json"
+
+# Build settings
+markdown: kramdown

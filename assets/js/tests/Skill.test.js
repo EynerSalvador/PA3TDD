@@ -1,20 +1,24 @@
 describe('Skill Model', () => {
   let mockSkills;
 
+  beforeAll(() => {
+    // Configurar fetch mock
+    global.fetch = jest.fn();
+  });
+
   beforeEach(() => {
     mockSkills = [
       { id: 1, name: 'JavaScript', category: 'Lenguajes' },
       { id: 2, name: 'HTML', category: 'Frontend' }
     ];
     
-    global.fetch = jest.fn(() =>
+    fetch.mockImplementation(() =>
       Promise.resolve({
         json: () => Promise.resolve({ skills: mockSkills })
       })
     );
   });
 
-  // Usa it() en lugar de test()
   it('debería crear una instancia con propiedades correctas', () => {
     const skill = new Skill(mockSkills[0]);
     expect(skill.name).toBe('JavaScript');

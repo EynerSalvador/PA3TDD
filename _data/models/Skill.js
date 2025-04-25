@@ -6,14 +6,15 @@ class Skill {
     this.category = data.category;
   }
 
-  static all() {
-    return fetch('/_data/db.json')
-      .then(response => response.json())
-      .then(data => data.skills.map(skill => new Skill(skill)));
+  static async all() {
+    const response = await fetch('_data/db.json');
+    const data = await response.json();
+    return data.skills.map(skill => new Skill(skill));
   }
 
-  static findByCategory(category) {
-    return this.all().then(skills => skills.filter(s => s.category === category));
+  static async findByCategory(category) {
+    const skills = await this.all();
+    return skills.filter(s => s.category === category);
   }
 }
 

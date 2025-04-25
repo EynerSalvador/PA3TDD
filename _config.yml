@@ -10,8 +10,9 @@ url: "" # Dejar vacío para desarrollo local o usar tu dominio en producción
 theme: minima
 plugins:
   - jekyll-feed
- 
   - jekyll-seo-tag
+
+
 
 # Configuración de assets (crítica para resolver el error)
 assets:
@@ -82,3 +83,5 @@ production: &production
 environments:
   development: *development
   production: *production
+
+  

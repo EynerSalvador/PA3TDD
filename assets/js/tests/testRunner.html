@@ -6,14 +6,20 @@
   <style>
     body { padding: 20px; font-family: Arial; }
     #loading { color: #666; text-align: center; padding: 50px; }
-    #status { margin: 20px 0; padding: 10px; border-radius: 4px; }
-    .success { background: #e8f5e9; color: #2e7d32; }
-    .error { background: #ffebee; color: #c62828; }
+    #status { 
+      margin: 20px 0; 
+      padding: 15px;
+      border-radius: 5px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+    .success { background: #e8f5e9; border-color: #c8e6c9; }
+    .error { background: #ffebee; border-color: #ffcdd2; }
   </style>
 </head>
 <body>
-  <div id="loading">Inicializando pruebas...</div>
-  <div id="status"></div>
+  <div id="loading">Inicializando entorno de pruebas...</div>
+  <div id="status">Estado: Preparando...</div>
 
   <!-- Cargar Jasmine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.js"></script>
@@ -27,73 +33,78 @@
     const loadingEl = document.getElementById('loading');
 
     function updateStatus(message, type = '') {
-      statusEl.textContent = message;
+      statusEl.innerHTML = `<strong>Estado:</strong> ${message}`;
       statusEl.className = type ? `status ${type}` : 'status';
-      console.log('Status:', message);
+      console.log(`[Status] ${message}`);
     }
 
     // 2. Mock de fetch para Jasmine
     window.originalFetch = window.fetch;
     window.fetch = jasmine.createSpy('fetch').and.callFake((url) => {
-      console.log('Mock fetch llamado para:', url);
+      console.log('[Mock Fetch] URL solicitada:', url);
       return Promise.resolve({
         ok: true,
-        json: () => {
-          if (url.includes('db.json')) {
-            return Promise.resolve({
-              projects: [{ id: 1, title: "Proyecto Test" }],
-              skills: [{ id: 1, name: "Skill Test" }]
-            });
-          }
-          return Promise.resolve({});
-        }
+        json: () => Promise.resolve({
+          projects: [{ id: 1, title: "Proyecto Test", technologies: ["JS"] }],
+          skills: [{ id: 1, name: "JavaScript", category: "Lenguajes" }]
+        })
       });
     });
 
-    // 3. Carga secuencial de scripts
-    async function loadScripts() {
-      try {
-        // Verificar rutas relativas desde testRunner.html
-        const basePath = window.location.pathname.includes('assets/js/tests') 
-          ? '../../..' 
-          : '';
-
-        updateStatus('Cargando Project.js...');
-        await loadScript(`${basePath}/_data/models/Project.js`);
-        
-        updateStatus('Cargando Skill.js...');
-        await loadScript(`${basePath}/_data/models/Skill.js`);
-        
-        updateStatus('Cargando pruebas...');
-        await loadScript('Project.test.js');
-        await loadScript('Skill.test.js');
-        
-        updateStatus('Pruebas cargadas ✅', 'success');
-        loadingEl.style.display = 'none';
-        
-        // Iniciar Jasmine
-        window.onload();
-      } catch (error) {
-        updateStatus(`Error: ${error.message}`, 'error');
-        console.error('Error de carga:', error);
-      }
-    }
-
+    // 3. Función mejorada para cargar scripts
     function loadScript(src) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
-        script.onload = resolve;
-        script.onerror = () => reject(new Error(`No se pudo cargar ${src}`));
+        
+        script.onload = () => {
+          console.log(`✅ Script cargado: ${src}`);
+          resolve();
+        };
+        
+        script.onerror = () => {
+          console.error(`❌ Error cargando: ${src}`);
+          reject(new Error(`No se pudo cargar ${src}`));
+        };
+        
         document.head.appendChild(script);
       });
     }
 
-    // Iniciar cuando el DOM esté listo
+    // 4. Secuencia de carga principal
+    async function initializeTestingEnvironment() {
+      try {
+        updateStatus('Determinando rutas base...');
+        
+        // Ajuste automático de rutas para GitHub Pages y desarrollo local
+        const isGitHubPages = window.location.host.includes('github.io');
+        const basePath = isGitHubPages ? '/PA3TDD' : '';
+        
+        updateStatus('Cargando modelos...');
+        await loadScript(`${basePath}/_data/models/Project.js`);
+        await loadScript(`${basePath}/_data/models/Skill.js`);
+        
+        updateStatus('Cargando pruebas...');
+        await loadScript(`${basePath}/assets/js/tests/Project.test.js`);
+        await loadScript(`${basePath}/assets/js/tests/Skill.test.js`);
+        
+        updateStatus('Entorno listo, iniciando pruebas...', 'success');
+        loadingEl.style.display = 'none';
+        
+        // Iniciar Jasmine manualmente
+        window.onload();
+      } catch (error) {
+        updateStatus(`Error crítico: ${error.message}`, 'error');
+        loadingEl.innerHTML = `❌ Error en la carga: ${error.message}`;
+        console.error('Error en inicialización:', error);
+      }
+    }
+
+    // Iniciar el proceso cuando el DOM esté listo
     if (document.readyState === 'complete') {
-      loadScripts();
+      initializeTestingEnvironment();
     } else {
-      document.addEventListener('DOMContentLoaded', loadScripts);
+      document.addEventListener('DOMContentLoaded', initializeTestingEnvironment);
     }
   </script>
 </body>

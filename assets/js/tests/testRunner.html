@@ -3,48 +3,39 @@
 <head>
   <title>Jasmine Test Runner</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.css">
-  <style>
-    /* Estilos para mejor visualización */
-    body { padding: 20px; }
-    .loading { color: #666; font-style: italic; }
-  </style>
 </head>
 <body>
-  <div class="loading">Cargando pruebas...</div>
-  
   <!-- Cargar Jasmine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/boot.js"></script>
 
-  <!-- Mock de fetch para el navegador -->
+  <!-- Configuración inicial para las pruebas -->
   <script>
-    // Configuración inicial para las pruebas
-    window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; // 10 segundos
+    // Configura timeout global para pruebas async
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; // 10 segundos
     
-    // Mock de fetch
+    // Mock de fetch usando Jasmine (no Jest)
     window.originalFetch = window.fetch;
-    window.fetch = jest.fn(); // Usamos jest.fn o podemos implementar uno manual
+    window.fetch = jasmine.createSpy('fetch').and.callFake(function() {
+      return Promise.resolve({
+        ok: true,
+        json: function() {
+          return Promise.resolve({
+            projects: [],
+            skills: []
+          });
+        }
+      });
+    });
   </script>
 
-  <!-- Cargar modelos desde la ubicación correcta -->
+  <!-- Cargar modelos -->
   <script src="/PA3TDD/_data/models/Project.js"></script>
   <script src="/PA3TDD/_data/models/Skill.js"></script>
 
   <!-- Cargar pruebas -->
   <script src="/PA3TDD/assets/js/tests/Project.test.js"></script>
   <script src="/PA3TDD/assets/js/tests/Skill.test.js"></script>
-
-  <!-- Eliminar mensaje de carga cuando termine -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const loadingElement = document.querySelector('.loading');
-        if (loadingElement) {
-          loadingElement.remove();
-        }
-      }, 500);
-    });
-  </script>
 </body>
 </html>

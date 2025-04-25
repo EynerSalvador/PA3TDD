@@ -8,6 +8,29 @@ class Project {
     // Validación de ID
     this.id = Number.isInteger(data.id) && data.id > 0 ? data.id : 0;
 
+    // Add this at the bottom:
+  if (typeof window !== 'undefined') {
+    window.Project = Project; // For browser
+  }
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Project; // For Node
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
     // Validación de título
     if (typeof data.title !== 'string' || data.title.trim() === '') {
       console.warn('Proyecto creado sin título válido');

@@ -1,5 +1,5 @@
 class ORM {
-  constructor(modelName, dbPath = '/portfolio-jekyll/_data/db.json') {
+  constructor(modelName, dbPath = '/_data/db.json') {
     this.modelName = modelName;
     this.dbPath = dbPath;
   }

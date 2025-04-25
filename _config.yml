@@ -4,6 +4,9 @@ description: >-
   Portafolio profesional con Jekyll, TDD y ORM en JSON
 baseurl: ""
 url: ""
+assets:
+  sources:
+    - assets
 twitter_username: tuusuario
 github_username: tuusuario
 

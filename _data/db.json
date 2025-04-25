@@ -2,10 +2,10 @@
   "projects": [
     {
       "id": 1,
-      "title": "Proyecto 1",
-      "description": "Descripción del proyecto 1",
-      "technologies": ["JavaScript", "HTML"],
-      "url": "https://ejemplo.com"
+      "title": "Portafolio",
+      "description": "Mi portafolio profesional",
+      "technologies": ["JS"],
+      "url": "#"
     }
   ],
   "skills": [

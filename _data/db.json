@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Proyecto 1",
+      "description": "Descripción del proyecto 1",
+      "technologies": ["JavaScript", "HTML"],
+      "url": "https://ejemplo.com"
+    }
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "name": "JavaScript",
+      "level": "Avanzado",
+      "category": "Lenguajes"
+    }
+  ]
+}

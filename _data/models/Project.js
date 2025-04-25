@@ -7,18 +7,18 @@ class Project {
     this.url = data.url || '#';
   }
 
-  static all() {
-    return fetch('/_data/db.json')
-      .then(response => response.json())
-      .then(data => data.projects.map(project => new Project(project)));
+  static async all() {
+    const response = await fetch('_data/db.json');
+    const data = await response.json();
+    return data.projects.map(project => new Project(project));
   }
 
-  static find(id) {
-    return this.all().then(projects => projects.find(p => p.id === id));
+  static async find(id) {
+    const projects = await this.all();
+    return projects.find(p => p.id === id);
   }
 }
 
-// Para usar en Node.js (Jekyll) y navegador
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = Project;
 }

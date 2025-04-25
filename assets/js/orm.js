@@ -1,5 +1,5 @@
 class ORM {
-  constructor(modelName, dbPath = '/_data/db.json') {
+  constructor(modelName, dbPath = '{{ site.baseurl }}/_data/db.json') {
     this.modelName = modelName;
     this.dbPath = dbPath;
   }

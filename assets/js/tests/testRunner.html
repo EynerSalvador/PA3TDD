@@ -26,16 +26,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/jasmine-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.6.0/boot.js"></script>
 
- <script>
+<script>
   async function initializeTests() {
     try {
-      // Load models from correct path (relative to testRunner.html location)
-      await loadScript('../_data/models/Project.js');
-      await loadScript('../_data/models/Skill.js');
+      // Determine base path for GitHub Pages vs local
+      const isGitHubPages = window.location.host.includes('github.io');
+      const basePath = isGitHubPages ? '/PA3TDD' : '';
       
-      // Load tests from same directory
-      await loadScript('Project.test.js');
-      await loadScript('Skill.test.js');
+      // Load models with correct path
+      await loadScript(`${basePath}/_data/models/Project.js`);
+      await loadScript(`${basePath}/_data/models/Skill.js`);
+      
+      // Load tests
+      await loadScript(`${basePath}/assets/js/tests/Project.test.js`);
+      await loadScript(`${basePath}/assets/js/tests/Skill.test.js`);
       
       console.log('All scripts loaded successfully');
       window.onload(); // Start Jasmine
@@ -51,7 +55,9 @@
       const script = document.createElement('script');
       script.src = src;
       script.onload = resolve;
-      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      script.onerror = () => {
+        reject(new Error(`Failed to load ${src} (Actual path: ${new URL(src, window.location.href).href})`));
+      };
       document.head.appendChild(script);
     });
   }

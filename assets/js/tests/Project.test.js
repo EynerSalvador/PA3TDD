@@ -1,20 +1,24 @@
 describe('Project Model', () => {
   let mockProjects;
 
+  beforeAll(() => {
+    // Configurar fetch mock
+    global.fetch = jest.fn();
+  });
+
   beforeEach(() => {
     mockProjects = [
       { id: 1, title: 'Portafolio', description: 'Mi portafolio profesional' },
       { id: 2, title: 'Blog', description: 'Blog personal' }
     ];
     
-    global.fetch = jest.fn(() =>
+    fetch.mockImplementation(() =>
       Promise.resolve({
         json: () => Promise.resolve({ projects: mockProjects })
       })
     );
   });
 
-  // Usa it() en lugar de test()
   it('debería crear una instancia con propiedades correctas', () => {
     const project = new Project(mockProjects[0]);
     expect(project.title).toBe('Portafolio');

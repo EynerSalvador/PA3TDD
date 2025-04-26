@@ -51,7 +51,8 @@ describe('Modelo Skill', () => {
       
       expect(skills.length).toBe(2);
       expect(skills[0]).toBeInstanceOf(Skill);
-      expect(fetch).toHaveBeenCalledWith('/PA3TDD/_data/db.json');
+      expect(fetch).toHaveBeenCalledWith('{{ site.baseurl }}/assets/data/db.json');
+
     });
 
     it('findByCategory() debería filtrar correctamente', async () => {

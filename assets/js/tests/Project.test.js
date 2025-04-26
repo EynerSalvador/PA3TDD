@@ -35,7 +35,7 @@ describe('Modelo Project', () => {
         Promise.resolve({
           ok: true,
           json: () => Promise.resolve({
-            projects: [testProjectData]
+           projects: [{ id: 1, title: "Test Project" }]
           })
         })
       );

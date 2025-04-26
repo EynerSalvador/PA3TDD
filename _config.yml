@@ -3,8 +3,8 @@ title: Mi Portafolio Profesional
 email: tu@email.com
 description: >-
   Portafolio profesional desarrollado con Jekyll, implementando TDD y ORM con JSON
-baseurl: "" 
-url: ""
+baseurl: "/PA3TDD" 
+url: "https://eynersalvador.github.io/PA3TDD/"
 
 # ===== CONFIGURACIÓN JEKYLL =====
 theme: minima

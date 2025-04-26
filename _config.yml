@@ -64,6 +64,7 @@ exclude:
 include:
   - _data/models
   - assets/js
+  - assets/js/test
   - assets/css
   
 

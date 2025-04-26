@@ -1,56 +1,34 @@
-# Configuración básica del sitio
+# ===== CONFIGURACIÓN BÁSICA =====
 title: Mi Portafolio Profesional
 email: tu@email.com
 description: >-
   Portafolio profesional desarrollado con Jekyll, implementando TDD y ORM con JSON
-baseurl: "" # Dejar vacío para desarrollo local
-url: "" # Dejar vacío para desarrollo local o usar tu dominio en producción
+baseurl: "" 
+url: ""
 
-# Configuración de Jekyll
+# ===== CONFIGURACIÓN JEKYLL =====
 theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-
-
-# Configuración de assets (crítica para resolver el error)
-assets:
-  base_path: /assets
-  sources:
-    - assets
-  js: js
-  css: css
-  cache: false # Desactivar en desarrollo
-
-# Configuración de modelos y datos
-data_dir: _data
-models_path: _data/models
-db_path: _data/db.json
-
-# Configuración de compilación
 markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
-# Configuración de GitHub Pages (para despliegue futuro)
-github:
-  repository: username/repo-name # Reemplazar con tus datos
-  branch: main
+# ===== CONFIGURACIÓN ASSETS (CRÍTICA) =====
+assets:
+  sources:
+    - assets
+  cache: false # Desactivar en desarrollo
 
-# Configuración de SEO (opcional)
-seo:
-  title: true
-  description: true
-  image: "/assets/images/og-image.jpg"
+# ===== INCLUSIONES/EXCLUSIONES (ESENCIAL) =====
+include:
+  - assets/js
+  - assets/js/tests  # Nombre exacto de tu carpeta
+  - assets/css
+  - _data/db.json    # Solo si tus pruebas lo necesitan
 
-# Configuración personalizada para el ORM
-custom:
-  orm:
-    debug: true # Cambiar a false en producción
-    base_url: "" # Dejar vacío para rutas relativas
-
-# Excluir archivos/directorios no necesarios
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -59,30 +37,41 @@ exclude:
   - .gitignore
   - .vscode
   - .github
+  - .github/workflows/*.sample
 
-# Incluir archivos/directorios adicionales
-include:
-  - _data/models
-  - assets/js
-  - assets/js/test
-  - assets/css
-  
-
-# Configuración de desarrollo
+# ===== ENTORNOS =====
 development: &development
   url: http://localhost:4000
   assets:
     debug: true
 
-# Configuración de producción
 production: &production
   url: https://tudominio.com
   assets:
     debug: false
 
-# Entornos (puedes activarlos con JEKYLL_ENV=production)
 environments:
   development: *development
   production: *production
 
-  
+# ===== CONFIGURACIÓN PARA JASMINE =====
+test_env: &test_env
+  url: ""
+  baseurl: ""
+
+# ===== CONFIGURACIÓN PERSONALIZADA =====
+custom:
+  orm:
+    debug: true
+    base_url: ""
+
+# ===== GITHUB PAGES =====
+github:
+  repository: username/repo-name
+  branch: main
+
+# ===== SEO =====
+seo:
+  title: true
+  description: true
+  image: "/assets/images/og-image.jpg"

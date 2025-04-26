@@ -63,7 +63,7 @@ exclude:
 # Incluir archivos/directorios adicionales
 include:
   - _data/models
-  - assets/js/*.liquid
+  - assets/js
   - assets/css
   
 

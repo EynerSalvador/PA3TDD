@@ -27,9 +27,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/4.0.0/jasmine.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/4.0.0/jasmine-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/4.0.0/boot.js"></script>
-  <script src="../Project.js"></script>
-  <script src="Project.test.js"></script>
+ <!-- Opción 1 - Si Project.js está en assets/js/ -->
+<script src="../../js/Project.js"></script>
 
+<!-- Opción 2 - Ruta alternativa común -->
+<script src="../../../assets/js/Project.js"></script>
+
+<!-- Opción 3 - Ruta absoluta desde raíz -->
+<script src="/assets/js/Project.js"></script>
 <script>
   async function initializeTests() {
     try {

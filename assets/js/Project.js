@@ -129,5 +129,4 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = Project;
 }
 
-# Ejecuta en tu terminal:
-find . -name "Project.js"
+

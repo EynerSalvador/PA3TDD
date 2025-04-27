@@ -1,36 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jasmine Test Runner</title>
-  
-  <!-- Cargar los estilos de Jasmine -->
+  <!-- Jasmine 4.1.0 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
-  
-  <!-- Cargar Jasmine -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Simular el fetch para las pruebas -->
+  <!-- Carga tradicional (sin módulos) -->
   <script>
-    window.fetch = window.fetch || function() {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ projects: [] })
-      });
-    };
+    // Verifica carga de Jasmine
+    if(!window.jasmine) {
+      throw new Error("Jasmine no se cargó correctamente");
+    }
+    
+    // Carga tus archivos
+    document.write('<script src="../Project.js"><\/script>');
+    document.write('<script src="Project.test.js"><\/script>');
   </script>
-
-  <!-- Cargar Project.js y las pruebas de forma secuencial -->
-  <script src="../js/Project.js"></script>  <!-- No usar "type=module" -->
-  <script src="../js/tests/Project.test.js"></script>  <!-- No usar "type=module" -->
-
 </head>
-<body>
-  <h1>Jasmine Test Runner</h1>
-  <div id="output"></div>
-</body>
+<body></body>
 </html>

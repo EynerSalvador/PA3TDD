@@ -85,9 +85,19 @@ describe('Modelo Project', function() {
         createdAt: "2021-01-01" 
       };
       const project = new Project(projectData);
+      
+      // Verificación mejorada que maneja tanto formato ISO como fecha simple
+      const expectedData = {
+        ...projectData,
+        createdAt: jasmine.any(String) // Acepta cualquier string de fecha
+      };
+      
       expect(project.id).toBe(1);
       expect(project.title).toBe("Project 1");
-      expect(project).toEqual(jasmine.objectContaining(projectData));
+      expect(project).toEqual(jasmine.objectContaining(expectedData));
+      
+      // Verificación específica para la fecha
+      expect(project.createdAt).toMatch(/^2021-01-01($|T)/); // Acepta con o sin tiempo
     });
   });
 });

@@ -14,7 +14,9 @@ if (!window.fetch) {
 }
 
 // Importa la clase Project si estás usando módulos ES6
-import Project from '../js/Project.js';  // Ajusta la ruta según corresponda
+//import Project from '../js/Project.js';  // Ajusta la ruta según corresponda
+import Project from '../../assets/js/Project.js';
+
 
 describe('Modelo Project', () => {
   

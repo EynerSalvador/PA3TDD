@@ -1,4 +1,4 @@
-@@ -1,77 +1,48 @@
+
 # ===== CONFIGURACIÓN BÁSICA =====
 title: Mi Portafolio Profesional
 email: tu@email.com
@@ -9,15 +9,6 @@ url: "https://eynersalvador.github.io/PA3TDD/"
 
 # ===== CONFIGURACIÓN JEKYLL =====
 theme: minima
-
-
-
-
-
-
-
-
-
 
 plugins:
   - jekyll-feed
@@ -40,16 +31,6 @@ include:
   - assets/js/tests  # Nombre exacto de tu carpeta
   - assets/css
   - _data/db.json    # Solo si tus pruebas lo necesitan
-
-
-
-
-
-
-
-
-
-
 
 
 exclude:

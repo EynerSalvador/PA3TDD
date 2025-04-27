@@ -33,14 +33,16 @@ title: Portafolio
 </script>
 
 <!-- Cargar Jasmine Core -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/jasmine.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/jasmine-html.js"></script>
+<!-- Jasmine v3.8.0 (sin la deprecación de boot.js) -->
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.8.0/lib/jasmine-core/jasmine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.8.0/lib/jasmine-core/jasmine-html.js"></script>
 
-<!-- Cargar boot0.js antes de los archivos de prueba -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/boot0.js"></script>
+<!-- Inicializar Jasmine con boot.js -->
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.8.0/lib/jasmine-core/boot.js"></script>
 
-<!-- Aquí van tus archivos de prueba -->
+<!-- Archivos de prueba -->
 <script src="/spec/ProjectSpec.js"></script>
+
 
 <!-- Cargar boot1.js para completar el proceso de inicialización -->
 <script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/boot1.js"></script>

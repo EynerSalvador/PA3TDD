@@ -2,41 +2,65 @@
 <html>
 <head>
   <title>Jasmine Test Runner</title>
-  <!-- Versión específica de Jasmine 4.1.0 (evita mensajes de deprecación) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
   
-  <!-- Carga moderna de Jasmine (sin boot.js deprecado) -->
+  <!-- Jasmine 4.1.0 - Versión estable sin deprecaciones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
+  
+  <!-- Sistema de arranque moderno -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Mock de fetch para pruebas -->
+  <!-- Configuración esencial -->
   <script>
-    // Configuración inicial para evitar errores
-    window.jasmineRequire = window.jasmineRequire || {};
+    // 1. Soluciona la deprecación de boot.js
     window.jasmine = window.jasmine || {};
+    window.jasmineRequire = window.jasmineRequire || {};
     
-    // Mock global de fetch (opcional, solo si tus pruebas lo necesitan)
-    if (!window.fetch) {
-      window.fetch = function() {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ projects: [] })
-        });
-      };
+    // 2. Mock de fetch para pruebas API
+    window.fetch = window.fetch || function() {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ projects: [] })
+      });
+    };
+    
+    // 3. Carga síncrona para evitar errores
+    function loadScript(src) {
+      document.write('<script src="' + src + '"><\/script>');
     }
   </script>
-
-  <!-- Carga tus archivos (rutas absolutas recomendadas) -->
-
-
-  <script src="{{ '/assets/js/Project.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/tests/Project.test.js' | relative_url }}"></script>
-
 </head>
 <body>
-  <!-- Elemento para mostrar el estado -->
-  <div id="jasmine-status" style="display:none;"></div>
+  <!-- Carga tus archivos con rutas absolutas -->
+  <script>
+    // 4. Ruta definitiva para Project.js (3 opciones)
+    const projectPaths = [
+      '/assets/js/Project.js',       // Opción 1: Absoluta
+      '../Project.js',               // Opción 2: Relativa
+      'assets/js/Project.js'         // Opción 3: Alternativa
+    ];
+    
+    let loaded = false;
+    projectPaths.forEach(path => {
+      if (!loaded) {
+        try {
+          loadScript(path);
+          console.log('Cargado desde:', path);
+          loaded = true;
+        } catch (e) {
+          console.warn('Error cargando:', path);
+        }
+      }
+    });
+    
+    // 5. Carga las pruebas
+    if (loaded) {
+      loadScript('Project.test.js');
+    } else {
+      console.error('No se pudo cargar Project.js');
+    }
+  </script>
 </body>
 </html>

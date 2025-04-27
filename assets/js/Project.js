@@ -74,16 +74,7 @@ class Project {
       throw new TypeError('La tecnología debe ser un string no vacío');
     }
 
-// Posible refactor en Project.js (ejemplo)
-static async filterByTechnology(tech) {
-  const projects = await this.all();
-  // Refactor: Normaliza tecnología a minúsculas para case-insensitive
-  return projects.filter(p => 
-    p.technologies.some(t => t.toLowerCase() === tech.toLowerCase())
-  );
-}
-//
-    
+      
     const projects = await this.all();
     return projects.filter(project => 
       project.technologies.some(

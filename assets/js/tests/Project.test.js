@@ -1,61 +1,93 @@
-// Mock de fetch para que devuelva datos simulados en las pruebas
-if (!window.fetch) {
-  window.fetch = function() {
+// Mock robusto de fetch para pruebas
+beforeAll(function() {
+  window.originalFetch = window.fetch;
+  
+  window.fetch = jasmine.createSpy('fetch').and.callFake(function() {
     return Promise.resolve({
       ok: true,
-      json: () => Promise.resolve({
-        projects: [
-          { id: 1, title: "Project 1", description: "A project", technologies: ["JavaScript"], url: "http://example.com", createdAt: "2021-01-01" },
-          { id: 2, title: "Project 2", description: "Another project", technologies: ["HTML", "CSS"], url: "http://example2.com", createdAt: "2021-02-01" }
-        ]
-      })
+      json: function() {
+        return Promise.resolve({
+          projects: [
+            { 
+              id: 1, 
+              title: "Project 1", 
+              description: "A project", 
+              technologies: ["JavaScript"], 
+              url: "http://example.com", 
+              createdAt: "2021-01-01" 
+            },
+            { 
+              id: 2, 
+              title: "Project 2", 
+              description: "Another project", 
+              technologies: ["HTML", "CSS"], 
+              url: "http://example2.com", 
+              createdAt: "2021-02-01" 
+            }
+          ]
+        });
+      }
     });
-  };
-}
+  });
+});
 
-// Importa la clase Project
-import Project from '../../assets/js/Project.js';
+// Restaura fetch después de las pruebas
+afterAll(function() {
+  window.fetch = window.originalFetch;
+});
 
-describe('Modelo Project', () => {
+describe('Modelo Project', function() {
+  // Verifica que Project esté disponible
+  beforeAll(function() {
+    if (typeof Project === 'undefined') {
+      throw new Error('Project no está definido. Revisa la carga del archivo Project.js');
+    }
+  });
 
-  // Métodos estáticos
-  describe('Métodos estáticos', () => {
-
-    it('debería retornar proyectos', async () => {
+  describe('Métodos estáticos', function() {
+    it('debería retornar proyectos', async function() {
       const projects = await Project.all();
       expect(projects).toBeDefined();
-      expect(projects.length).toBeGreaterThan(0);
+      expect(projects.length).toBe(2);
+      expect(projects[0]).toEqual(jasmine.any(Project));
       expect(projects[0].title).toBe("Project 1");
     });
 
-    it('debería encontrar por ID', async () => {
+    it('debería encontrar por ID', async function() {
       const project = await Project.find(1);
       expect(project).toBeDefined();
       expect(project.id).toBe(1);
       expect(project.title).toBe("Project 1");
     });
 
-    it('debería filtrar correctamente por tecnología', async () => {
+    it('debería filtrar correctamente por tecnología', async function() {
       const projects = await Project.filterByTechnology("JavaScript");
-      expect(projects).toBeDefined();
-      expect(projects.length).toBeGreaterThan(0);
+      expect(projects.length).toBe(1);
       expect(projects[0].technologies).toContain("JavaScript");
     });
   });
 
-  // Constructor
-  describe('Constructor', () => {
-
-    it('debería usar valores por defecto cuando corresponda', () => {
+  describe('Constructor', function() {
+    it('debería usar valores por defecto cuando corresponda', function() {
       const project = new Project({});
       expect(project.title).toBe("Sin título");
+      expect(project.url).toBe("#");
+      expect(project.technologies).toEqual([]);
     });
 
-    it('debería crear instancias correctamente', () => {
-      const projectData = { id: 1, title: "Project 1", description: "A project", technologies: ["JavaScript"], url: "http://example.com", createdAt: "2021-01-01" };
+    it('debería crear instancias correctamente', function() {
+      const projectData = { 
+        id: 1, 
+        title: "Project 1", 
+        description: "A project", 
+        technologies: ["JavaScript"], 
+        url: "http://example.com", 
+        createdAt: "2021-01-01" 
+      };
       const project = new Project(projectData);
       expect(project.id).toBe(1);
       expect(project.title).toBe("Project 1");
+      expect(project).toEqual(jasmine.objectContaining(projectData));
     });
   });
 });

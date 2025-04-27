@@ -99,9 +99,10 @@ class Project {
 }
 
 // Exportación universal
-if (typeof window !== 'undefined') {
-  window.Project = Project;
-}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = Project;
+}
+if (typeof window !== 'undefined') {
+  window.Project = Project;
 }

@@ -26,8 +26,9 @@ jobs:
       run: |
         bundle exec jekyll build
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        deploy_branch: gh-pages  # La rama de despliegue
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+   - name: Deploy to GitHub Pages
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    publish_branch: gh-pages  # Cambié deploy_branch por publish_branch
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+

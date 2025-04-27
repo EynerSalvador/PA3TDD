@@ -32,14 +32,16 @@ title: Portafolio
 </script>
 <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 
-<!-- Agrega esto para pruebas con Jasmine (opcional) -->
-<!-- Librerías Jasmine -->
+<!-- Agregar las librerías Jasmine -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.css">
 <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine-html.js"></script>
+
+<!-- Cargar boot0.js antes del código de prueba -->
 <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot0.js"></script>
 
-<!-- Cargar aquí tus archivos de prueba -->
+<!-- Cargar tus archivos de prueba -->
 <script src="/spec/ProjectSpec.js"></script>
 
+<!-- Cargar boot1.js para finalizar el arranque -->
 <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot1.js"></script>

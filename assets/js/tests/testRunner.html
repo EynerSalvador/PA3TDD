@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Test Runner</title>
+  <title>Jasmine Test Runner</title>
+  <!-- Versión específica de Jasmine 4.1.0 (evita mensajes de deprecación) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
+  
+  <!-- Carga moderna de Jasmine (sin boot.js deprecado) -->
+  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Jasmine CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.css">
+  <!-- Mock de fetch para pruebas -->
+  <script>
+    // Configuración inicial para evitar errores
+    window.jasmineRequire = window.jasmineRequire || {};
+    window.jasmine = window.jasmine || {};
+    
+    // Mock global de fetch (opcional, solo si tus pruebas lo necesitan)
+    if (!window.fetch) {
+      window.fetch = function() {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ projects: [] })
+        });
+      };
+    }
+  </script>
 
-  <!-- Jasmine -->
-  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine-html.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot.js"></script>
-
-  <!-- CARGAR TU ARCHIVO A TESTEAR -->
-  <script src="../Project.js"></script>
-
-  <!-- CARGAR LOS TESTS -->
-  <script src="Project.test.js"></script>
-  <script src="Skill.test.js"></script>
+  <!-- Carga tus archivos (rutas absolutas recomendadas) -->
+  <script src="/assets/js/Project.js"></script>
+  <script src="/assets/js/tests/Project.test.js"></script>
 </head>
 <body>
+  <!-- Elemento para mostrar el estado -->
+  <div id="jasmine-status" style="display:none;"></div>
 </body>
 </html>

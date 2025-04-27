@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jasmine Test Runner</title>
   
-  <!-- Jasmine 4.1.0 - Versión estable sin deprecaciones -->
+  <!-- Jasmine 4.1.0 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
@@ -12,15 +14,15 @@
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <script type="module" src="js/tests/Project.test.js"></script>
-
+  <!-- Cargar las pruebas como módulo -->
+  <script type="module" src="../js/tests/Project.test.js"></script>  <!-- Ruta ajustada -->
 
   <!-- Configuración esencial -->
   <script>
     // 1. Soluciona la deprecación de boot.js
     window.jasmine = window.jasmine || {};
     window.jasmineRequire = window.jasmineRequire || {};
-    
+
     // 2. Mock de fetch para pruebas API
     window.fetch = window.fetch || function() {
       return Promise.resolve({
@@ -28,7 +30,7 @@
         json: () => Promise.resolve({ projects: [] })
       });
     };
-    
+
     // 3. Carga síncrona para evitar errores
     function loadScript(src) {
       document.write('<script src="' + src + '"><\/script>');
@@ -38,11 +40,10 @@
 <body>
   <!-- Carga tus archivos con rutas absolutas -->
   <script>
-    // 4. Ruta definitiva para Project.js (3 opciones)
+    // 4. Ruta definitiva para Project.js
     const projectPaths = [
-      '/assets/js/Project.js',       // Opción 1: Absoluta
-      '../Project.js',               // Opción 2: Relativa
-      'assets/js/Project.js'         // Opción 3: Alternativa
+      '/assets/js/Project.js',  // Ruta absoluta
+      '../Project.js'           // Ruta relativa
     ];
     
     let loaded = false;
@@ -60,7 +61,7 @@
     
     // 5. Carga las pruebas
     if (loaded) {
-      loadScript('Project.test.js');
+      loadScript('../js/tests/Project.test.js');  // Ruta relativa para las pruebas
     } else {
       console.error('No se pudo cargar Project.js');
     }

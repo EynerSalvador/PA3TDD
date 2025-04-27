@@ -5,27 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jasmine Test Runner</title>
   
-  <!-- Jasmine 4.1.0 -->
+  <!-- Cargar los estilos de Jasmine -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
+  
+  <!-- Cargar Jasmine -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
-  
-  <!-- Sistema de arranque moderno -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Cargar las pruebas como módulo -->
-  <script type="module" src="../js/Project.js"></script>
-  <script type="module" src="../js/tests/Project.test.js"></script>
-
-
-  <!-- Configuración esencial -->
-  <script>
-    // 1. Soluciona la deprecación de boot.js
-    window.jasmine = window.jasmine || {};
-    window.jasmineRequire = window.jasmineRequire || {};
-
-    // 2. Mock de fetch para pruebas API
+  <!-- Agregar soporte para importar Project.js y pruebas -->
+  <script type="module">
+    // Simular el fetch para las pruebas
     window.fetch = window.fetch || function() {
       return Promise.resolve({
         ok: true,
@@ -33,40 +24,29 @@
       });
     };
 
-    // 3. Carga síncrona para evitar errores
-    function loadScript(src) {
-      document.write('<script src="' + src + '"><\/script>');
+    // Cargar los módulos de forma asincrónica
+    async function loadTests() {
+      try {
+        // Importar Project.js
+        await import('../js/Project.js');
+        console.log('Project.js cargado');
+
+        // Importar las pruebas
+        await import('../js/tests/Project.test.js');
+        console.log('Pruebas cargadas');
+
+      } catch (error) {
+        console.error('Error cargando los módulos:', error);
+      }
     }
+
+    // Ejecutar la carga de los scripts
+    loadTests();
   </script>
+  
 </head>
 <body>
-  <!-- Carga tus archivos con rutas absolutas -->
-  <script>
-    // 4. Ruta definitiva para Project.js
-    const projectPaths = [
-      '/assets/js/Project.js',  // Ruta absoluta
-      '../Project.js'           // Ruta relativa
-    ];
-    
-    let loaded = false;
-    projectPaths.forEach(path => {
-      if (!loaded) {
-        try {
-          loadScript(path);
-          console.log('Cargado desde:', path);
-          loaded = true;
-        } catch (e) {
-          console.warn('Error cargando:', path);
-        }
-      }
-    });
-    
-    // 5. Carga las pruebas
-    if (loaded) {
-      loadScript('../js/tests/Project.test.js');  // Ruta relativa para las pruebas
-    } else {
-      console.error('No se pudo cargar Project.js');
-    }
-  </script>
+  <h1>Jasmine Test Runner</h1>
+  <div id="output"></div>
 </body>
 </html>

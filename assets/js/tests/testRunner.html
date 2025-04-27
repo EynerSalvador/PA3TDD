@@ -2,68 +2,48 @@
 <html>
 <head>
   <title>Jasmine Test Runner</title>
-  
+
   <!-- Jasmine 4.1.0 - Versión estable sin deprecaciones -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
-  
-  <!-- Sistema de arranque moderno -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <script type="module" src="js/tests/Project.test.js"></script>
-
-
-  <!-- Configuración esencial -->
-  <script>
-    // 1. Soluciona la deprecación de boot.js
-    window.jasmine = window.jasmine || {};
-    window.jasmineRequire = window.jasmineRequire || {};
-    
-    // 2. Mock de fetch para pruebas API
-    window.fetch = window.fetch || function() {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ projects: [] })
+  <!-- Script para cargar los tests y la lógica -->
+  <script type="module">
+    // Cargar Project.js de manera asincrónica
+    const loadScript = (src) => {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.type = 'module';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
       });
     };
-    
-    // 3. Carga síncrona para evitar errores
-    function loadScript(src) {
-      document.write('<script src="' + src + '"><\/script>');
-    }
+
+    // Cargar Jasmine y Project.js
+    const loadTests = async () => {
+      try {
+        // Cargar Project.js
+        await loadScript('assets/js/Project.js');
+        console.log('Project.js cargado');
+
+        // Cargar las pruebas después de cargar Project.js
+        await loadScript('js/tests/Project.test.js');
+        console.log('Pruebas cargadas');
+        
+      } catch (error) {
+        console.error('Error al cargar los scripts:', error);
+      }
+    };
+
+    loadTests();
   </script>
 </head>
 <body>
-  <!-- Carga tus archivos con rutas absolutas -->
-  <script>
-    // 4. Ruta definitiva para Project.js (3 opciones)
-    const projectPaths = [
-      '/assets/js/Project.js',       // Opción 1: Absoluta
-      '../Project.js',               // Opción 2: Relativa
-      'assets/js/Project.js'         // Opción 3: Alternativa
-    ];
-    
-    let loaded = false;
-    projectPaths.forEach(path => {
-      if (!loaded) {
-        try {
-          loadScript(path);
-          console.log('Cargado desde:', path);
-          loaded = true;
-        } catch (e) {
-          console.warn('Error cargando:', path);
-        }
-      }
-    });
-    
-    // 5. Carga las pruebas
-    if (loaded) {
-      loadScript('Project.test.js');
-    } else {
-      console.error('No se pudo cargar Project.js');
-    }
-  </script>
+  <h1>Pruebas de Proyecto</h1>
 </body>
 </html>

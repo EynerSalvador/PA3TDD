@@ -2,23 +2,39 @@
 <html>
 <head>
   <title>Jasmine Test Runner</title>
-  <!-- Jasmine 4.1.0 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.css">
+  
+  <!-- Carga Jasmine 4.1.0 -->
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/jasmine-html.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Carga tradicional (sin módulos) -->
-  <script>
-    // Verifica carga de Jasmine
-    if(!window.jasmine) {
-      throw new Error("Jasmine no se cargó correctamente");
-    }
-    
-    // Carga tus archivos
-    document.write('<script src="../Project.js"><\/script>');
-    document.write('<script src="Project.test.js"><\/script>');
-  </script>
+  <!-- Carga tus archivos -->
+  <script src="../Project.js"></script>
+  <script src="Project.test.js"></script>
+  
+  <style>
+    /* Estilos para mejor visualización */
+    body { padding: 20px; font-family: Arial; }
+    .jasmine_html-reporter { max-width: 1000px; margin: 0 auto; }
+  </style>
 </head>
-<body></body>
+<body>
+  <!-- Elemento contenedor necesario -->
+  <div id="jasmine_html-reporter"></div>
+  
+  <script>
+    // Verificación de carga
+    document.addEventListener('DOMContentLoaded', function() {
+      if(!window.jasmine) {
+        document.body.innerHTML = '<h1 style="color:red">Error: Jasmine no se cargó correctamente</h1>';
+      }
+      
+      if(typeof Project === 'undefined') {
+        document.body.innerHTML += '<h2 style="color:red">Error: Project no está definido</h2>';
+      }
+    });
+  </script>
+</body>
 </html>

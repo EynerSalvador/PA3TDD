@@ -29,8 +29,11 @@
   </script>
 
   <!-- Carga tus archivos (rutas absolutas recomendadas) -->
-  <script src="/assets/js/Project.js"></script>
-  <script src="/assets/js/tests/Project.test.js"></script>
+
+
+  <script src="{{ '/assets/js/Project.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/tests/Project.test.js' | relative_url }}"></script>
+
 </head>
 <body>
   <!-- Elemento para mostrar el estado -->

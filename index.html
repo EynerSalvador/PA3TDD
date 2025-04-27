@@ -26,22 +26,24 @@ title: Portafolio
   </div>
 </div>
 
-<!-- Scripts principales de tu portafolio -->
+<!-- Carga de JavaScript -->
 <script>
+  // Verificación de ruta antes de cargar
   console.log('Ruta del script:', "{{ '/assets/js/main.js' | relative_url }}");
 </script>
-<script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 
-<!-- Agregar las librerías Jasmine -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.css">
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine-html.js"></script>
+<!-- Cargar Jasmine Core -->
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/jasmine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/jasmine-html.js"></script>
 
-<!-- Cargar boot0.js antes del código de prueba -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot0.js"></script>
+<!-- Cargar boot0.js antes de los archivos de prueba -->
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/boot0.js"></script>
 
-<!-- Cargar tus archivos de prueba -->
+<!-- Aquí van tus archivos de prueba -->
 <script src="/spec/ProjectSpec.js"></script>
 
-<!-- Cargar boot1.js para finalizar el arranque -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot1.js"></script>
+<!-- Cargar boot1.js para completar el proceso de inicialización -->
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/boot1.js"></script>
+
+<!-- Cargar tu script principal -->
+<script src="{{ '/assets/js/main.js' | relative_url }}"></script>

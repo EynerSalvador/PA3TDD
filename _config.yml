@@ -1,77 +1,48 @@
-# ===== CONFIGURACIÓN BÁSICA =====
-title: Mi Portafolio Profesional
-email: tu@email.com
-description: >-
-  Portafolio profesional desarrollado con Jekyll, implementando TDD y ORM con JSON
-baseurl: "/PA3TDD" 
-url: "https://eynersalvador.github.io/PA3TDD/"
+# _config.yml
 
-# ===== CONFIGURACIÓN JEKYLL =====
-theme: minima
+# Configuración básica de Jekyll
+title: "PA3TDD"
+description: "Proyecto PA3TDD - Desarrollo de software"
+url: "https://EynerSalvador.github.io/PA3TDD"
+baseurl: "/PA3TDD" # Base URL para GitHub Pages
+author: "EynerSalvador"
+
+# Configuración del repositorio en GitHub
+repository: "EynerSalvador/PA3TDD" # Reemplaza con el nombre de tu repositorio
+github_username: "EynerSalvador"
+
+# Configuración de los plugins
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-github-metadata
 
-markdown: kramdown
-highlighter: rouge
-permalink: pretty
+# Configuración del feed de Jekyll
+feed:
+  path: /feed.xml
 
-# ===== CONFIGURACIÓN ASSETS (CRÍTICA) =====
-assets:
-  sources:
-    - assets
-  cache: false # Desactivar en desarrollo
+# Permitir la creación de archivos en carpetas dentro de /_posts/
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
 
-# ===== INCLUSIONES/EXCLUSIONES (ESENCIAL) =====
-include:
-  - assets/js
-  - assets/js/tests  # Nombre exacto de tu carpeta
-  - assets/css
-  - _data/db.json    # Solo si tus pruebas lo necesitan
+# Configuración de los permalinks
+permalink: /:categories/:year/:month/:day/:title/
 
+# Idioma
+lang: "es"
+
+# Configuración de SEO
+seo:
+  title: "PA3TDD - Proyecto Jekyll"
+  description: "Sitio personal para el proyecto PA3TDD"
+  url: "https://EynerSalvador.github.io/PA3TDD"
+  twitter: "@EynerSalvador"
+
+# Configuración para evitar errores al usar Github Pages
 exclude:
   - Gemfile
   - Gemfile.lock
-  - node_modules
-  - vendor
-  - .gitignore
-  - .vscode
-  - .github
-  - .github/workflows/*.sample
-
-# ===== ENTORNOS =====
-development: &development
-  url: http://localhost:4000
-  assets:
-    debug: true
-
-production: &production
-  url: https://tudominio.com
-  assets:
-    debug: false
-
-environments:
-  development: *development
-  production: *production
-
-# ===== CONFIGURACIÓN PARA JASMINE =====
-test_env: &test_env
-  url: ""
-  baseurl: ""
-
-# ===== CONFIGURACIÓN PERSONALIZADA =====
-custom:
-  orm:
-    debug: true
-    base_url: ""
-
-# ===== GITHUB PAGES =====
-github:
-  repository: username/repo-name
-  branch: main
-
-# ===== SEO =====
-seo:
-  title: true
-  description: true
-  image: "/assets/images/og-image.jpg"
+  - README.md
+  - LICENSE

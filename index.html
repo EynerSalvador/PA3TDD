@@ -26,10 +26,20 @@ title: Portafolio
   </div>
 </div>
 
-<!-- Carga de JavaScript -->
+<!-- Scripts principales de tu portafolio -->
 <script>
-  // Verificación de ruta antes de cargar
   console.log('Ruta del script:', "{{ '/assets/js/main.js' | relative_url }}");
 </script>
 <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 
+<!-- Agrega esto para pruebas con Jasmine (opcional) -->
+<!-- Librerías Jasmine -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.css">
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/jasmine-html.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot0.js"></script>
+
+<!-- Cargar aquí tus archivos de prueba -->
+<script src="/spec/ProjectSpec.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jasmine-core@latest/lib/jasmine-core/boot1.js"></script>

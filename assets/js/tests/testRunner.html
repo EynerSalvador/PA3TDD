@@ -14,36 +14,20 @@
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jasmine-core@4.1.0/lib/jasmine-core/boot1.js"></script>
 
-  <!-- Agregar soporte para importar Project.js y pruebas -->
-  <script type="module">
-    // Simular el fetch para las pruebas
+  <!-- Simular el fetch para las pruebas -->
+  <script>
     window.fetch = window.fetch || function() {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ projects: [] })
       });
     };
-
-    // Cargar los módulos de forma asincrónica
-    async function loadTests() {
-      try {
-        // Importar Project.js
-        await import('../js/Project.js');
-        console.log('Project.js cargado');
-
-        // Importar las pruebas
-        await import('../js/tests/Project.test.js');
-        console.log('Pruebas cargadas');
-
-      } catch (error) {
-        console.error('Error cargando los módulos:', error);
-      }
-    }
-
-    // Ejecutar la carga de los scripts
-    loadTests();
   </script>
-  
+
+  <!-- Cargar Project.js y las pruebas de forma secuencial -->
+  <script src="../js/Project.js"></script>  <!-- No usar "type=module" -->
+  <script src="../js/tests/Project.test.js"></script>  <!-- No usar "type=module" -->
+
 </head>
 <body>
   <h1>Jasmine Test Runner</h1>

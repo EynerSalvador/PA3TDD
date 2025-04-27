@@ -30,19 +30,7 @@ title: Portafolio
 <script>
   // Verificación de ruta antes de cargar
   console.log('Ruta del script:', "{{ '/assets/js/main.js' | relative_url }}");
-</script>
 
-<!-- Cargar Jasmine Core -->
-
-<!-- Inicializar Jasmine con boot.js -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.8.0/lib/jasmine-core/boot.js"></script>
-
-<!-- Archivos de prueba -->
-<script src="/spec/ProjectSpec.js"></script>
-
-
-<!-- Cargar boot1.js para completar el proceso de inicialización -->
-<script src="https://cdn.jsdelivr.net/npm/jasmine-core@3.9.0/lib/jasmine-core/boot1.js"></script>
 
 <!-- Cargar tu script principal -->
 <script src="{{ '/assets/js/main.js' | relative_url }}"></script>

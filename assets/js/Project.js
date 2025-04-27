@@ -33,7 +33,7 @@ class Project {
 
   static async all() {
     try {
-      const response = await fetch('/_data/db.json');
+      const response = await fetch('/PA3TDD/_data/db.json');
       
       if (!response.ok) {
         throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);

@@ -1,14 +1,8 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 3.9.2"
-gem "minima", "~> 2.5"
-gem "github-pages", "~> 228", group: :jekyll_plugins
-
-
-
+gem "jekyll", "~> 3.9.3"
 
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.15.1"
+  gem "github-pages", "~> 228", require: "github-pages"
+  gem "faraday-retry"
 end
-
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
